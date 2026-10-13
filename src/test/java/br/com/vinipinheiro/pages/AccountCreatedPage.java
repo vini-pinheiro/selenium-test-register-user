@@ -1,21 +1,25 @@
 package br.com.vinipinheiro.pages;
 
-import java.time.Duration;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
+/**
+ * Página de confirmação de conta criada (/account_created - "ACCOUNT CREATED!").
+ */
 public class AccountCreatedPage extends BasePage {
-    private By continueLocator = By.xpath("/html/body/section/div/div/div/div/a");
+    private final By accountCreatedTitle = By.cssSelector("h2[data-qa='account-created']");
+    private final By continueButton = By.cssSelector("a[data-qa='continue-button']");
 
     public AccountCreatedPage(WebDriver driver) {
         super(driver);
-        new WebDriverWait(driver, Duration.ofSeconds(3)).until(d -> d.findElement(By.tagName("h2")));
     }
 
-    public HomePage clickContinue(WebDriver driver) {
-        driver.findElement(continueLocator).click();
+    public boolean isAccountCreatedVisible() {
+        return isElementVisible(accountCreatedTitle);
+    }
+
+    public HomePage clickContinue() {
+        click(continueButton);
         return new HomePage(driver);
     }
 }
