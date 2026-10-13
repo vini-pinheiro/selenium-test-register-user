@@ -1,22 +1,40 @@
 package br.com.vinipinheiro.pages;
 
-import java.time.Duration;
-
+import br.com.vinipinheiro.components.Navbar;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
+/**
+ * Página principal (HomePage), integrando o componente Navbar e verificações da tela inicial.
+ */
 public class HomePage extends BasePage {
-    private By loggedMessageLocator = By.xpath("/html/body/header/div/div/div/div[2]/div/ul/li[10]/a");
-    private By deleteAccountLocator = By.xpath("/html/body/header/div/div/div/div[2]/div/ul/li[5]/a");
+    private final By sliderCarouselLocator = By.id("slider-carousel");
+    private final By mainLogoLocator = By.cssSelector("img[alt='Website for automation practice']");
+
+    private Navbar navbar;
 
     public HomePage(WebDriver driver) {
         super(driver);
-        new WebDriverWait(driver, Duration.ofSeconds(3)).until(d -> d.findElement(loggedMessageLocator));
+        this.navbar = new Navbar(driver);
+    }
+
+    public Navbar getNavbar() {
+        return this.navbar;
+    }
+
+    public boolean isHomePageVisible() {
+        return isElementVisible(sliderCarouselLocator) || isElementVisible(mainLogoLocator);
+    }
+
+    public LoginPage clickSignupLogin() {
+        return navbar.clickSignupLogin();
     }
 
     public DeleteAccountPage clickDeleteAccount() {
-        driver.findElement(deleteAccountLocator).click();
-        return new DeleteAccountPage(driver);
+        return navbar.clickDeleteAccount();
+    }
+
+    public boolean isLoggedInAs(String username) {
+        return navbar.isLoggedInAs(username);
     }
 }
