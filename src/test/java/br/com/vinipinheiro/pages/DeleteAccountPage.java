@@ -1,22 +1,25 @@
 package br.com.vinipinheiro.pages;
 
-import java.time.Duration;
-
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.ui.WebDriverWait;
 
+/**
+ * Página de confirmação de exclusão de conta (/delete_account - "ACCOUNT DELETED!").
+ */
 public class DeleteAccountPage extends BasePage {
-    private By h2Locator = By.xpath("/html/body/section/div/div/div/h2");
-    private By continueLocator = By.xpath("/html/body/section/div/div/div/div/a");
+    private final By accountDeletedTitle = By.cssSelector("h2[data-qa='account-deleted']");
+    private final By continueButton = By.cssSelector("a[data-qa='continue-button']");
 
     public DeleteAccountPage(WebDriver driver) {
         super(driver);
-        new WebDriverWait(driver, Duration.ofSeconds(3)).until(d -> d.findElement(h2Locator));
     }
 
-    public HomePage clickContinue(WebDriver driver) {
-        driver.findElement(continueLocator).click();
+    public boolean isAccountDeletedVisible() {
+        return isElementVisible(accountDeletedTitle);
+    }
+
+    public HomePage clickContinue() {
+        click(continueButton);
         return new HomePage(driver);
     }
 }
