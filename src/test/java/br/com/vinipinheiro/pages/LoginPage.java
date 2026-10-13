@@ -1,28 +1,35 @@
 package br.com.vinipinheiro.pages;
 
+import br.com.vinipinheiro.components.LoginForm;
+import br.com.vinipinheiro.components.SignupForm;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-import br.com.vinipinheiro.components.Login;
-
+/**
+ * Representa a página de autenticação (/login), contendo os componentes LoginForm e SignupForm.
+ */
 public class LoginPage extends BasePage {
-    private Login login;
+    private final By loginFormLocator = By.cssSelector(".login-form");
+    private final By signupFormLocator = By.cssSelector(".signup-form");
+
+    private LoginForm loginForm;
+    private SignupForm signupForm;
 
     public LoginPage(WebDriver driver) {
         super(driver);
-        if (!driver.getTitle().equals("Automation Exercise - Signup / Login")) {
-            throw new IllegalStateException(
-                    "Essa não é a página de Login, " + "a página atual é: " + driver.getCurrentUrl());
-        }
-        ;
-        this.login = new Login(driver.findElement(By.className("login-form")));
+        this.loginForm = new LoginForm(driver);
+        this.signupForm = new SignupForm(driver);
     }
 
-    public HomePage loginAs(String email, String password) {
-
-        login.typeEmail(email);
-        login.typePassword(password);
-        return login.submitLogin(driver);
+    public LoginForm getLoginForm() {
+        return this.loginForm;
     }
 
+    public SignupForm getSignupForm() {
+        return this.signupForm;
+    }
+
+    public boolean isPageLoaded() {
+        return isElementVisible(loginFormLocator) && isElementVisible(signupFormLocator);
+    }
 }
